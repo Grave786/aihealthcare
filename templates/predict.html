@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Predict | AI Healthcare Prediction System{% endblock %}
+
+{% block content %}
+<section class="prediction-page section-padding">
+    <div class="container">
+        <div class="prediction-header">
+            <span class="eyebrow">AI Risk Analysis</span>
+            <h1>Choose a prediction type to begin.</h1>
+            <p>Select one health check, fill in the simple inputs, and get your risk score with AI recommendations.</p>
+        </div>
+
+        <form method="post" class="prediction-form-card">
+            {% csrf_token %}
+
+            <div class="prediction-choice-card">
+                <h2>What would you like to predict?</h2>
+                <p>Please select a prediction type to continue.</p>
+                <div class="prediction-options">
+                    {% for choice in form.prediction_type %}
+                        <label class="prediction-option">
+                            {{ choice.tag }}
+                            <span>{{ choice.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="text-danger small mt-2">{{ form.prediction_type.errors }}</div>
+            </div>
+
+            <div id="selection-message" class="selection-message">
+                <i class="bi bi-arrow-up-circle"></i>
+                <strong>Please select a prediction type to continue</strong>
+                <span>The matching form will appear here automatically.</span>
+            </div>
+
+            <div id="diabetes-form" class="prediction-panel" style="display: none;">
+                <div class="panel-title-row">
+                    <div>
+                        <span class="eyebrow">Diabetes Check</span>
+                        <h2>Diabetes Inputs</h2>
+                    </div>
+                    <i class="bi bi-droplet-half panel-icon"></i>
+                </div>
+                <div class="row g-3">
+                    {% for field in form %}
+                        {% if field.name in diabetes_fields %}
+                            <div class="col-md-6">
+                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="heart-form" class="prediction-panel" style="display: none;">
+                <div class="panel-title-row">
+                    <div>
+                        <span class="eyebrow">Heart Check</span>
+                        <h2>Heart Disease Inputs</h2>
+                    </div>
+                    <i class="bi bi-heart-pulse panel-icon"></i>
+                </div>
+                <div class="row g-3">
+                    {% for field in form %}
+                        {% if field.name in heart_fields %}
+                            <div class="col-md-6">
+                                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="submit-card">
+                <button id="predict-submit" type="submit" class="btn btn-primary btn-lg w-100" disabled>
+                    Predict and Get Recommendation
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const radios = document.querySelectorAll('input[name="prediction_type"]');
+        const diabetesForm = document.getElementById("diabetes-form");
+        const heartForm = document.getElementById("heart-form");
+        const selectionMessage = document.getElementById("selection-message");
+        const submitButton = document.getElementById("predict-submit");
+
+        function hidePanel(panel) {
+            panel.classList.remove("show");
+            panel.style.display = "none";
+        }
+
+        function showPanel(panel) {
+            panel.style.display = "block";
+            requestAnimationFrame(function () {
+                panel.classList.add("show");
+            });
+        }
+
+        function updatePredictionForm() {
+            const selected = document.querySelector('input[name="prediction_type"]:checked');
+
+            hidePanel(diabetesForm);
+            hidePanel(heartForm);
+
+            if (!selected) {
+                selectionMessage.style.display = "grid";
+                submitButton.disabled = true;
+                return;
+            }
+
+            selectionMessage.style.display = "none";
+            submitButton.disabled = false;
+
+            if (selected.value === "diabetes") {
+                showPanel(diabetesForm);
+            } else if (selected.value === "heart") {
+                showPanel(heartForm);
+            } else if (selected.value === "both") {
+                showPanel(diabetesForm);
+                showPanel(heartForm);
+            }
+        }
+
+        radios.forEach(function (radio) {
+            radio.addEventListener("change", updatePredictionForm);
+        });
+
+        updatePredictionForm();
+    });
+</script>
+{% endblock %}

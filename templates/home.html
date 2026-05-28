@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Home | AI Healthcare Prediction System{% endblock %}
+
+{% block content %}
+<section class="home-hero">
+    <div class="container">
+        <div class="hero-shell">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 fade-in">
+                    <span class="eyebrow"><i class="bi bi-stars"></i> AI-powered healthcare intelligence</span>
+                    <h1 class="hero-title">Predict health risks earlier with smart AI guidance.</h1>
+                    <p class="hero-copy">
+                        Estimate diabetes and heart disease risk, receive personalized wellness recommendations,
+                        and keep your health prediction history secure in one clean dashboard.
+                    </p>
+                    <div class="hero-actions">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'predict' %}" class="btn btn-primary btn-lg">Start Prediction</a>
+                            <a href="{% url 'history' %}" class="btn btn-light btn-lg">View History</a>
+                        {% else %}
+                            <a href="{% url 'predict' %}" class="btn btn-primary btn-lg">Start Prediction</a>
+                            <a href="{% url 'register' %}" class="btn btn-light btn-lg">Create Account</a>
+                        {% endif %}
+                    </div>
+                    <div class="hero-trust">
+                        <span><i class="bi bi-shield-check"></i> Secure records</span>
+                        <span><i class="bi bi-lightning-charge"></i> Fast analysis</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 fade-in delay-1">
+                    <div class="hero-image-card">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1100&q=85" alt="Doctor reviewing a digital healthcare dashboard">
+                        <div class="floating-metric metric-top">
+                            <span>Risk Score</span>
+                            <strong>82.5%</strong>
+                        </div>
+                        <div class="floating-metric metric-bottom">
+                            <span>AI Recommendation</span>
+                            <strong>Ready</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="stats-grid fade-in">
+            <div class="stat-card">
+                <strong>12K+</strong>
+                <span>Predictions Made</span>
+            </div>
+            <div class="stat-card">
+                <strong>94%</strong>
+                <span>Model Accuracy</span>
+            </div>
+            <div class="stat-card">
+                <strong>8.5K</strong>
+                <span>Users</span>
+            </div>
+            <div class="stat-card">
+                <strong>25K+</strong>
+                <span>Recommendations Generated</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding pt-0">
+    <div class="container">
+        <div class="section-heading fade-in">
+            <span class="eyebrow">Platform Features</span>
+            <h2>Everything needed for guided health risk analysis.</h2>
+            <p>Designed for clarity, speed, and safe recommendation workflows.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-xl-3 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-activity"></i></div>
+                    <h3>Disease Prediction</h3>
+                    <p>Run diabetes, heart disease, or combined prediction from trained ML models.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 fade-in delay-1">
+                <div class="feature-card">
+                    <div class="feature-icon green"><i class="bi bi-robot"></i></div>
+                    <h3>AI Recommendations</h3>
+                    <p>Generate simple precautions, diet plans, exercise, and lifestyle guidance.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 fade-in delay-2">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-lock"></i></div>
+                    <h3>Secure History</h3>
+                    <p>Save user-specific prediction records with login-protected access.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 fade-in delay-3">
+                <div class="feature-card">
+                    <div class="feature-icon green"><i class="bi bi-speedometer2"></i></div>
+                    <h3>Fast Analysis</h3>
+                    <p>Get risk scores and recommendation output in a streamlined workflow.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding how-section">
+    <div class="container">
+        <div class="section-heading fade-in">
+            <span class="eyebrow">How It Works</span>
+            <h2>Three steps from data to guidance.</h2>
+        </div>
+        <div class="how-grid">
+            <div class="how-card fade-in">
+                <span class="step-number">01</span>
+                <i class="bi bi-clipboard2-pulse"></i>
+                <h3>Enter Health Data</h3>
+                <p>Add the required values for diabetes, heart disease, or both predictions.</p>
+            </div>
+            <div class="how-card fade-in delay-1">
+                <span class="step-number">02</span>
+                <i class="bi bi-cpu"></i>
+                <h3>AI Prediction</h3>
+                <p>Models process the inputs and calculate probability-based risk levels.</p>
+            </div>
+            <div class="how-card fade-in delay-2">
+                <span class="step-number">03</span>
+                <i class="bi bi-card-checklist"></i>
+                <h3>Get Recommendations</h3>
+                <p>Receive diet, exercise, lifestyle, and consultation guidance.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 fade-in">
+                <img class="benefits-image" src="https://images.unsplash.com/photo-1581093458791-9d15482442f6?auto=format&fit=crop&w=1000&q=85" alt="Healthcare professional using digital health technology">
+            </div>
+            <div class="col-lg-6 fade-in delay-1">
+                <span class="eyebrow">Why It Helps</span>
+                <h2 class="section-title">Built for accessible, personalized health insights.</h2>
+                <div class="benefit-list">
+                    <div><i class="bi bi-check-circle-fill"></i> Personalized recommendations based on prediction risk.</div>
+                    <div><i class="bi bi-check-circle-fill"></i> Easy interface for beginners and regular users.</div>
+                    <div><i class="bi bi-check-circle-fill"></i> Secure records tied to your authenticated account.</div>
+                    <div><i class="bi bi-check-circle-fill"></i> AI-powered insights with clear safety boundaries.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding testimonials-section">
+    <div class="container">
+        <div class="section-heading fade-in">
+            <span class="eyebrow">User Stories</span>
+            <h2>Clear guidance people can understand.</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4 fade-in">
+                <div class="testimonial-card">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80" alt="Anika Sharma">
+                    <h3>Anika Sharma</h3>
+                    <p>“The dashboard made my risk report easy to understand and gave me practical next steps.”</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in delay-1">
+                <div class="testimonial-card">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80" alt="Rahul Mehta">
+                    <h3>Rahul Mehta</h3>
+                    <p>“I liked that the recommendations were simple, safe, and focused on habits.”</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in delay-2">
+                <div class="testimonial-card">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=160&q=80" alt="Priya Nair">
+                    <h3>Priya Nair</h3>
+                    <p>“Keeping my history in one place helps me compare reports over time.”</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="cta-banner fade-in">
+            <h2>Start Your AI Health Check Today</h2>
+            <p>Use smart prediction tools and receive simple wellness guidance in minutes.</p>
+            <div class="hero-actions justify-content-center">
+                <a href="{% url 'predict' %}" class="btn btn-light btn-lg">Start Prediction</a>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">Register</a>
+                {% else %}
+                    <a href="{% url 'history' %}" class="btn btn-outline-light btn-lg">View History</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding pt-0">
+    <div class="container">
+        <div class="contact-panel fade-in">
+            <div>
+                <span class="eyebrow">Contact</span>
+                <h2>Need help with the platform?</h2>
+                <p>Reach out for setup support, account help, or workflow questions.</p>
+            </div>
+            <div class="contact-grid">
+                <span><i class="bi bi-envelope"></i> support@aihealthcare.com</span>
+                <span><i class="bi bi-geo-alt"></i> Healthcare Innovation Center</span>
+                <span><i class="bi bi-telephone"></i> +61 98765 43210</span>
+                <span class="contact-social">
+                    <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

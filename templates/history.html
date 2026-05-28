@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}History | AI Healthcare Prediction System{% endblock %}
+
+{% block content %}
+<section class="history-page section-padding">
+    <div class="container">
+        <div class="history-header fade-in">
+            <div class="history-title">
+                <span class="history-icon"><i class="bi bi-clock-history"></i></span>
+                <div>
+                    <span class="eyebrow">Health Records</span>
+                    <h1>Prediction History</h1>
+                    <p>Review your previous health risk checks and open detailed recommendations anytime.</p>
+                </div>
+            </div>
+            <a href="{% url 'predict' %}" class="btn btn-primary btn-lg">
+                <i class="bi bi-plus-circle"></i> New Prediction
+            </a>
+        </div>
+
+        {% if predictions %}
+            <div class="row g-4">
+                {% for prediction in predictions %}
+                    <div class="col-md-6 col-xl-4 fade-in">
+                        <article class="history-card">
+                            <div class="history-card-top">
+                                <span class="history-date">
+                                    <i class="bi bi-calendar3"></i>
+                                    {{ prediction.created_at|date:"M d, Y h:i A" }}
+                                </span>
+                                {% if prediction.risk_level == "Low Risk" %}
+                                    <span class="risk-badge risk-low">Low</span>
+                                {% elif prediction.risk_level == "Moderate Risk" %}
+                                    <span class="risk-badge risk-moderate">Moderate</span>
+                                {% else %}
+                                    <span class="risk-badge risk-high">High</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="history-disease-row">
+                                {% if prediction.disease == "Diabetes" %}
+                                    <span class="history-disease-icon diabetes-icon"><i class="bi bi-droplet-half"></i></span>
+                                {% else %}
+                                    <span class="history-disease-icon heart-icon"><i class="bi bi-heart-pulse"></i></span>
+                                {% endif %}
+                                <div>
+                                    <span class="summary-label">Disease</span>
+                                    <h2>{{ prediction.disease }}</h2>
+                                </div>
+                            </div>
+
+                            <div class="history-score">
+                                <span>Risk Chance</span>
+                                <strong>{{ prediction.probability }}%</strong>
+                            </div>
+
+                            <div class="progress history-progress" role="progressbar" aria-label="Prediction risk chance" aria-valuenow="{{ prediction.probability }}" aria-valuemin="0" aria-valuemax="100">
+                                {% if prediction.risk_level == "Low Risk" %}
+                                    <div class="progress-bar bg-success" style="width: {{ prediction.probability }}%"></div>
+                                {% elif prediction.risk_level == "Moderate Risk" %}
+                                    <div class="progress-bar bg-warning" style="width: {{ prediction.probability }}%"></div>
+                                {% else %}
+                                    <div class="progress-bar bg-danger" style="width: {{ prediction.probability }}%"></div>
+                                {% endif %}
+                            </div>
+
+                            <a class="btn btn-outline-primary w-100 mt-4" href="{% url 'result' %}?prediction_id={{ prediction.id }}">
+                                <i class="bi bi-file-earmark-medical"></i> View Details
+                            </a>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-history fade-in">
+                <span class="empty-icon"><i class="bi bi-clipboard2-pulse"></i></span>
+                <h2>No predictions yet</h2>
+                <p>Start your first AI health check and your saved results will appear here.</p>
+                <a href="{% url 'predict' %}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-plus-circle"></i> Start Your First Prediction
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

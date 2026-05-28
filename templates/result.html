@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Result | AI Healthcare Prediction System{% endblock %}
+
+{% block content %}
+<section class="result-page section-padding">
+    <div class="container">
+        <div class="result-header fade-in">
+            <span class="eyebrow">Health Report</span>
+            <h1>Your AI health risk summary</h1>
+            <p>Generated on {{ prediction.created_at|date:"M d, Y h:i A" }}</p>
+        </div>
+
+        <div class="result-summary-card fade-in">
+            <div class="result-summary-content">
+                <div class="result-icon">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
+                <div>
+                    <span class="summary-label">Likely Risk Area</span>
+                    <h2>{{ prediction.disease }}</h2>
+                    <div class="risk-badge-row">
+                        {% if prediction.risk_level == "Low Risk" %}
+                            <span class="risk-badge risk-low"><i class="bi bi-check-circle-fill"></i> {{ prediction.risk_level }}</span>
+                        {% elif prediction.risk_level == "Moderate Risk" %}
+                            <span class="risk-badge risk-moderate"><i class="bi bi-exclamation-triangle-fill"></i> {{ prediction.risk_level }}</span>
+                        {% else %}
+                            <span class="risk-badge risk-high"><i class="bi bi-exclamation-octagon-fill"></i> {{ prediction.risk_level }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="risk-score-box">
+                <span>Risk Chance</span>
+                <strong>{{ prediction.probability }}%</strong>
+                <div class="progress result-progress" role="progressbar" aria-label="Risk chance" aria-valuenow="{{ prediction.probability }}" aria-valuemin="0" aria-valuemax="100">
+                    {% if prediction.risk_level == "Low Risk" %}
+                        <div class="progress-bar bg-success" style="width: {{ prediction.probability }}%"></div>
+                    {% elif prediction.risk_level == "Moderate Risk" %}
+                        <div class="progress-bar bg-warning" style="width: {{ prediction.probability }}%"></div>
+                    {% else %}
+                        <div class="progress-bar bg-danger" style="width: {{ prediction.probability }}%"></div>
+                    {% endif %}
+                </div>
+                <small>This score is an estimate from the selected machine learning model.</small>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-1">
+            <div class="col-xl-8">
+                <div class="dashboard-card recommendation-card fade-in delay-1">
+                    <div class="card-title-row">
+                        <div>
+                            <span class="eyebrow">AI Guidance</span>
+                            <h2>Personalized recommendations</h2>
+                        </div>
+                        <span class="card-icon ai-icon"><i class="bi bi-stars"></i></span>
+                    </div>
+                    <div class="recommendation-text enhanced-recommendation">
+                        {{ prediction.recommendation|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4">
+                <div class="dashboard-card disclaimer-card fade-in delay-2">
+                    <div class="disclaimer-icon"><i class="bi bi-shield-exclamation"></i></div>
+                    <h2>Important note</h2>
+                    <p>
+                        This system provides informational guidance only and is not a substitute for professional medical advice.
+                        Please consult a qualified doctor for diagnosis, treatment, or urgent symptoms.
+                    </p>
+                </div>
+
+                <div class="action-card fade-in delay-3">
+                    <a href="{% url 'predict' %}" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-plus-circle"></i> Run Another Prediction
+                    </a>
+                    <a href="{% url 'history' %}" class="btn btn-outline-primary btn-lg w-100">
+                        <i class="bi bi-clock-history"></i> Go to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-card analysis-card fade-in mt-4">
+            <div class="card-title-row">
+                <div>
+                    <span class="eyebrow">Detailed Risk Analysis</span>
+                    <h2>Model comparison</h2>
+                </div>
+                <span class="card-icon"><i class="bi bi-bar-chart-line-fill"></i></span>
+            </div>
+
+            <div class="row g-4">
+                {% if prediction.input_data.diabetes_probability != None %}
+                    <div class="col-md-6">
+                        <div class="comparison-card">
+                            <div class="comparison-top">
+                                <span class="comparison-icon diabetes-icon"><i class="bi bi-droplet-half"></i></span>
+                                <div>
+                                    <h3>Diabetes Risk Chance</h3>
+                                    <p>Diabetes model output</p>
+                                </div>
+                            </div>
+                            <strong>{{ prediction.input_data.diabetes_probability }}%</strong>
+                            <div class="progress comparison-progress" role="progressbar" aria-label="Diabetes risk chance" aria-valuenow="{{ prediction.input_data.diabetes_probability }}" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: {{ prediction.input_data.diabetes_probability }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if prediction.input_data.heart_probability != None %}
+                    <div class="col-md-6">
+                        <div class="comparison-card">
+                            <div class="comparison-top">
+                                <span class="comparison-icon heart-icon"><i class="bi bi-heart-pulse"></i></span>
+                                <div>
+                                    <h3>Heart Disease Risk Chance</h3>
+                                    <p>Heart disease model output</p>
+                                </div>
+                            </div>
+                            <strong>{{ prediction.input_data.heart_probability }}%</strong>
+                            <div class="progress comparison-progress" role="progressbar" aria-label="Heart disease risk chance" aria-valuenow="{{ prediction.input_data.heart_probability }}" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar heart-bar" style="width: {{ prediction.input_data.heart_probability }}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
